@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Administration 101: The Visual Guide</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Palette & Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light Gray Blue background */
+            color: #1e293b; /* Slate 800 text */
+        }
+
+        /* Chart Container Logic - Strictly Responsive */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Palette Variables for Reference (Applied via Tailwind classes mostly) */
+        /* Primary Blue: #0e7490 (cyan-700)
+           Accent Orange: #f97316 (orange-500)
+           Deep Navy: #164e63 (cyan-900)
+           Light Blue: #cffafe (cyan-100)
+        */
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Timeline CSS (No SVG) */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #cbd5e1;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+    </style>
+    <!-- 
+        NARRATIVE PLAN:
+        1. Intro: Define CRM Admin as the "architect" of the system.
+        2. User Permissions (The Gatekeepers): Use Donut chart to show role distribution.
+        3. Asset Management (The Toolkit): Use Bar chart to show types of assets (Templates, Reports).
+        4. Deployment (The Launch): Use HTML Timeline for the Plan -> Test -> Deploy flow.
+        5. Responsibilities (Daily Grind): Use Radar chart for skill balance.
+        6. Conclusion: Summary.
+        
+        PALETTE: "Brilliant Blues" with Orange Accents for high contrast/engagement.
+        NO SVG USED. NO MERMAID USED.
+    -->
+</head>
+<body class="bg-slate-100">
+
+    <!-- HERO SECTION -->
+    <header class="bg-gradient-to-r from-cyan-900 to-cyan-700 text-white py-16 px-4 shadow-xl">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">CRM Administration 101</h1>
+            <p class="text-xl md:text-2xl font-light text-cyan-100 max-w-3xl mx-auto">
+                A visual guide to managing, configuring, and deploying your business's most valuable asset: Customer Relationships.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <div class="bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm border border-white/20">
+                    <span class="text-2xl mr-2">⚙️</span> Configuration
+                </div>
+                <div class="bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm border border-white/20">
+                    <span class="text-2xl mr-2">🛡️</span> Security
+                </div>
+                <div class="bg-white/10 px-6 py-3 rounded-full backdrop-blur-sm border border-white/20">
+                    <span class="text-2xl mr-2">🚀</span> Deployment
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT GRID -->
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8 -mt-10 relative z-10">
+
+        <!-- INTRO CARD -->
+        <section class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-lg p-8 border-l-8 border-orange-500">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">The Role of the Admin</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Think of a CRM (Customer Relationship Management) system as a high-performance sports car. The sales team are the drivers, but the <strong>CRM Administrator</strong> is the chief mechanic and engineer. You don't just change the oil; you customize the engine, decide who gets the keys, and ensure the car doesn't crash during a race. Your goal is to make the system <em>easy</em> for users and <em>secure</em> for the business.
+            </p>
+        </section>
+
+        <!-- SECTION 1: USER PERMISSIONS -->
+        <section class="bg-white rounded-xl shadow-lg p-6 flex flex-col">
+            <div class="mb-4 border-b pb-4 border-slate-100">
+                <h3 class="text-xl font-bold text-cyan-800 flex items-center">
+                    <span class="text-3xl mr-3">🛡️</span> The Gatekeepers: User Roles
+                </h3>
+            </div>
+            
+            <p class="text-slate-600 mb-6 text-sm">
+                <strong>Goal: Compare.</strong> Not everyone needs the "Master Key." Security is about "Least Privilege." You define <strong>Profiles</strong> (what they can do) and <strong>Roles</strong> (what they can see). Below is a typical breakdown of user access in a healthy CRM.
+            </p>
+
+            <div class="flex-grow flex items-center justify-center bg-slate-50 rounded-lg p-4">
+                <!-- CHART CONTAINER 1 -->
+                <div class="chart-container">
+                    <canvas id="permissionsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-xs text-slate-400 text-center">
+                *Visualizing typical user hierarchy in a mid-sized org.
+            </div>
+        </section>
+
+        <!-- SECTION 2: ASSET MANAGEMENT -->
+        <section class="bg-white rounded-xl shadow-lg p-6 flex flex-col">
+            <div class="mb-4 border-b pb-4 border-slate-100">
+                <h3 class="text-xl font-bold text-cyan-800 flex items-center">
+                    <span class="text-3xl mr-3">🧰</span> The Toolkit: Managing Assets
+                </h3>
+            </div>
+            
+            <p class="text-slate-600 mb-6 text-sm">
+                <strong>Goal: Organize.</strong> A CRM isn't just a database; it's a collection of tools. "Assets" are the things you build to help users sell faster. You are responsible for keeping these updated, clean, and functional.
+            </p>
+
+            <div class="flex-grow flex items-center justify-center bg-slate-50 rounded-lg p-4">
+                <!-- CHART CONTAINER 2 -->
+                <div class="chart-container">
+                    <canvas id="assetsChart"></canvas>
+                </div>
+            </div>
+             <div class="mt-4 text-xs text-slate-400 text-center">
+                *Asset volume reflects maintenance effort required.
+            </div>
+        </section>
+
+        <!-- SECTION 3: CONFIGURATION PROCESS (TIMELINE) -->
+        <section class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-cyan-800 mb-6 flex items-center">
+                <span class="text-3xl mr-3">🚀</span> The Deployment Lifecycle
+            </h3>
+            <p class="text-slate-600 mb-10 max-w-3xl">
+                <strong>Goal: Change (Process).</strong> Never change the live system directly! To configure safely, you must follow a lifecycle. This prevents "breaking" the system for users who are currently working.
+            </p>
+
+            <!-- CUSTOM HTML TIMELINE (NO SVG) -->
+            <div class="relative max-w-4xl mx-auto">
+                <!-- The vertical line -->
+                <div class="hidden md:block timeline-line rounded"></div>
+
+                <div class="space-y-8 md:space-y-12">
+                    
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between">
+                        <div class="order-1 md:w-5/12 text-center md:text-right pr-0 md:pr-8">
+                            <h4 class="text-lg font-bold text-orange-600">1. Sandbox (Dev)</h4>
+                            <p class="text-sm text-slate-600 mt-2">Create new fields, write automation rules, and build layouts in an isolated environment. It's your safe playground.</p>
+                        </div>
+                        <div class="order-2 z-10 flex items-center justify-center w-12 h-12 bg-white border-4 border-orange-500 rounded-full shadow-md my-4 md:my-0">
+                            <span class="text-lg font-bold text-slate-700">1</span>
+                        </div>
+                        <div class="order-3 md:w-5/12 pl-0 md:pl-8"></div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between">
+                        <div class="order-1 md:w-5/12 hidden md:block"></div>
+                        <div class="order-2 z-10 flex items-center justify-center w-12 h-12 bg-white border-4 border-cyan-600 rounded-full shadow-md my-4 md:my-0">
+                            <span class="text-lg font-bold text-slate-700">2</span>
+                        </div>
+                        <div class="order-3 md:w-5/12 text-center md:text-left pl-0 md:pl-8">
+                            <h4 class="text-lg font-bold text-cyan-700">2. UAT (Testing)</h4>
+                            <p class="text-sm text-slate-600 mt-2">"User Acceptance Testing." Real users try your changes. Did the automation fire? Did the report load? Fix bugs here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between">
+                        <div class="order-1 md:w-5/12 text-center md:text-right pr-0 md:pr-8">
+                            <h4 class="text-lg font-bold text-cyan-800">3. Production (Live)</h4>
+                            <p class="text-sm text-slate-600 mt-2">Deploy the changes. This pushes your configuration from the Sandbox to the real world. Sales reps start using it immediately.</p>
+                        </div>
+                        <div class="order-2 z-10 flex items-center justify-center w-12 h-12 bg-cyan-800 border-4 border-cyan-800 rounded-full shadow-md my-4 md:my-0">
+                            <span class="text-lg font-bold text-white">3</span>
+                        </div>
+                        <div class="order-3 md:w-5/12 pl-0 md:pl-8"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DAILY RESPONSIBILITIES -->
+        <section class="bg-white rounded-xl shadow-lg p-6 flex flex-col md:col-span-2 lg:col-span-1">
+            <div class="mb-4 border-b pb-4 border-slate-100">
+                <h3 class="text-xl font-bold text-cyan-800 flex items-center">
+                    <span class="text-3xl mr-3">🧠</span> The Admin Mindset
+                </h3>
+            </div>
+            
+            <p class="text-slate-600 mb-6 text-sm">
+                <strong>Goal: Relationships (Skills).</strong> A good admin isn't just technical. You need a balance of soft skills and hard skills. This radar chart maps the daily demands placed on you.
+            </p>
+
+            <div class="flex-grow flex items-center justify-center bg-slate-50 rounded-lg p-4">
+                <!-- CHART CONTAINER 3 -->
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: KEY TAKEAWAYS (LIST) -->
+        <section class="bg-cyan-900 rounded-xl shadow-lg p-6 flex flex-col md:col-span-2 lg:col-span-1 text-white">
+            <div class="mb-4 border-b pb-4 border-cyan-700">
+                <h3 class="text-xl font-bold text-white flex items-center">
+                    <span class="text-3xl mr-3">📌</span> Cheat Sheet
+                </h3>
+            </div>
+            
+            <p class="text-cyan-200 mb-6 text-sm">
+                <strong>Goal: Organize (Summary).</strong> Remember these core tenets of CRM configuration and management.
+            </p>
+
+            <ul class="space-y-4">
+                <li class="flex items-start">
+                    <span class="text-orange-500 font-bold mr-3 text-xl">1.</span>
+                    <div>
+                        <h4 class="font-bold text-lg">Standard vs. Custom</h4>
+                        <p class="text-sm text-cyan-100 opacity-90">Always use Standard objects (like Contacts, Deals) first. Only build Custom objects if absolutely necessary. It keeps the system clean.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-orange-500 font-bold mr-3 text-xl">2.</span>
+                    <div>
+                        <h4 class="font-bold text-lg">Data Integrity</h4>
+                        <p class="text-sm text-cyan-100 opacity-90">Garbage in, garbage out. Use "Validation Rules" to prevent users from saving incomplete data (e.g., forcing a Phone Number).</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-orange-500 font-bold mr-3 text-xl">3.</span>
+                    <div>
+                        <h4 class="font-bold text-lg">Document Everything</h4>
+                        <p class="text-sm text-cyan-100 opacity-90">When you create a new automation, write down <em>why</em>. Six months from now, you will thank yourself.</p>
+                    </div>
+                </li>
+                 <li class="flex items-start">
+                    <span class="text-orange-500 font-bold mr-3 text-xl">4.</span>
+                    <div>
+                        <h4 class="font-bold text-lg">Training is Key</h4>
+                        <p class="text-sm text-cyan-100 opacity-90">The best configuration fails if no one knows how to use it. Spend 20% of your time training users.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 text-slate-500 text-sm">
+        <p>© 2023 CRM Learning Hub. Generated for educational purposes.</p>
+        <p class="mt-2">Created with Chart.js & Tailwind CSS. No SVGs were harmed in the making of this infographic.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- UTILITY: Label Wrapping Logic (Strict 16 char limit) ---
+        function formatLabel(str, maxwidth) {
+            if (typeof str !== 'string' || str.length <= maxwidth) {
+                return str;
+            }
+            const sections = [];
+            const words = str.split(' ');
+            let temp = '';
+
+            words.forEach(function(item, index) {
+                if (temp.length > 0) {
+                    const concat = temp + ' ' + item;
+                    if (concat.length > maxwidth) {
+                        sections.push(temp);
+                        temp = item;
+                    } else {
+                        temp = concat;
+                    }
+                } else {
+                    temp = item;
+                }
+                if (index === words.length - 1) {
+                    sections.push(temp);
+                }
+            });
+            return sections;
+        }
+
+        // --- GLOBAL CHART DEFAULTS ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#475569'; // slate-600
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(22, 78, 99, 0.9)'; // Cyan-900
+
+        // --- CHART 1: Permissions (Donut) ---
+        const ctxPermissions = document.getElementById('permissionsChart').getContext('2d');
+        const rawLabelsPermissions = ['Standard Users (Sales)', 'Managers (View All)', 'Read Only (Auditors)', 'System Administrators'];
+        const formattedLabelsPermissions = rawLabelsPermissions.map(l => formatLabel(l, 16));
+
+        new Chart(ctxPermissions, {
+            type: 'doughnut',
+            data: {
+                labels: formattedLabelsPermissions,
+                datasets: [{
+                    data: [60, 20, 15, 5],
+                    backgroundColor: [
+                        '#0891b2', // Cyan 600
+                        '#22d3ee', // Cyan 400
+                        '#cbd5e1', // Slate 300
+                        '#f97316'  // Orange 500 (Admins - Highlight)
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            },
+                            label: function(context) {
+                                return ` ${context.parsed}% of License Count`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 2: Asset Management (Horizontal Bar) ---
+        const ctxAssets = document.getElementById('assetsChart').getContext('2d');
+        const rawLabelsAssets = ['Report Generation', 'Dashboard Building', 'Email Templates', 'Data Import/Clean', 'Workflow Rules'];
+        const formattedLabelsAssets = rawLabelsAssets.map(l => formatLabel(l, 16));
+
+        new Chart(ctxAssets, {
+            type: 'bar',
+            data: {
+                labels: formattedLabelsAssets,
+                datasets: [{
+                    label: 'Complexity Level (1-10)',
+                    data: [4, 7, 3, 9, 8],
+                    backgroundColor: '#0e7490', // Cyan 700
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal bar
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            },
+                            label: function(context) {
+                                const descriptions = {
+                                    0: 'Sales reps need visibility into pipeline',
+                                    1: 'Execs need big picture charts',
+                                    2: 'Standardizing communication',
+                                    3: 'Fixing bad phone numbers/emails',
+                                    4: 'Automating task creation'
+                                };
+                                return ` Difficulty: ${context.parsed}/10`;
+                            },
+                            afterBody: function(tooltipItems) {
+                                // Add context about the task
+                                const descriptions = [
+                                    'Routine reporting tasks',
+                                    'Visualizing KPIs for management',
+                                    'Standardizing messaging',
+                                    'Critical for database health',
+                                    'Automating manual processes'
+                                ];
+                                return descriptions[tooltipItems[0].dataIndex];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- CHART 3: Skills Radar (Radar) ---
+        const ctxSkills = document.getElementById('skillsChart').getContext('2d');
+        const rawLabelsSkills = ['Data Analysis', 'Technical Logic', 'User Empathy', 'Business Strategy', 'Troubleshooting'];
+        const formattedLabelsSkills = rawLabelsSkills.map(l => formatLabel(l, 16));
+
+        new Chart(ctxSkills, {
+            type: 'radar',
+            data: {
+                labels: formattedLabelsSkills,
+                datasets: [{
+                    label: 'Required Skill Level',
+                    data: [8, 9, 7, 6, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(249, 115, 22, 0.2)', // Orange 500 low opacity
+                    borderColor: '#f97316', // Orange 500
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#f97316',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#f97316'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: {
+                    line: { borderWidth: 3 }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: {
+                            font: { size: 11, weight: '600' },
+                            color: '#0e7490'
+                        },
+                        ticks: { display: false, max: 10 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
